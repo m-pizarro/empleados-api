@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: empleados_api
+    restart: always
+    depends_on:
+      - mongodb
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+
+  mongodb:
+    container_name: empleados_db
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_DB=empleados
+    logging:
+      driver: 'none'
+    restart: always
+    volumes:
+      - mongodb_data_container:/data/db
+
+volumes:
+  mongodb_data_container:
